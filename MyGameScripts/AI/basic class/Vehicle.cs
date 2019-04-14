@@ -1,66 +1,89 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+//using System.Collections.Generic;
 
-public class Vehicle : MonoBehaviour
-{
-	//AI角色包含的操控列表
+public class Vehicle : MonoBehaviour {
+
 	private Steering[] steerings;
-	//AI角色最高速度
-	public float maxSpeed = 10.0f;
-	//AI角色能被施加的最大力
-	public float maxForce = 100.0f;
-	//最大速度的平方，提前算出，省cpu
+	public float maxSpeed = 10;
+	public float maxForce = 100;
 	protected float sqrMaxSpeed;
-	//AI角色mass
-	public float mass = 1.0f;
-	//AI角色velocity
+	public float mass = 1;
 	public Vector3 velocity;
-	//AI角色the velocity to change the direction
-	public float damping = 0.9f; //f means the num is float,it means double without f
-	//操控力更新间隔，为了达到高帧率，不必要每帧更新
+	public float damping = 9.0f;
 	public float computeInterval = 0.2f;
-	//判断是否是2D游戏，若是则忽略z值
 	public bool isPlanar = true;
-	//计算得到的操控力
+
 	private Vector3 steeringForce;
-	//AI角色的加速度
 	protected Vector3 acceleration;
-	//计时器
+	//private CharacterController controller;
+	//private Rigidbody theRigidbody;
+	//private Vector3 moveDistance;
 	private float timer;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		steeringForce = new Vector3(0,0,0);
-		sqrMaxSpeed = maxSpeed*maxSpeed;
-		timer = 0;
-		//获得该AI角色所包含的操控行为列表
-		steerings = GetComponents<Steering>;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-		timer += Time.deltaTime;
+	protected void Start_init () 
+	{
 		steeringForce = new Vector3(0,0,0);
-		//判断计算操控力的时间是否超过了computeInterval，若是则计算
+		sqrMaxSpeed = maxSpeed * maxSpeed;
+		//moveDistance = new Vector3(0,0,0);
+		timer = 0;
+
+		steerings = GetComponents<Steering>();
+
+		//controller = GetComponent<CharacterController>();
+		//theRigidbody = GetComponent<Rigidbody>();
+	}
+
+
+	void Update () 
+	{
+		timer += Time.deltaTime;
+		steeringForce = new Vector3(0,0,0);  
+
+		//ticked part, we will not compute force every frame
 		if (timer > computeInterval)
 		{
-			//对操控行为列表中的操控行为力乘以权重并求和
 			foreach (Steering s in steerings)
 			{
 				if (s.enabled)
-				{
 					steeringForce += s.Force()*s.weight;
-				}
 			}
-			//使操控力不大于maxForce
+
 			steeringForce = Vector3.ClampMagnitude(steeringForce,maxForce);
-			//求出加速度
-			acceleration = steeringForce/mass;
-			//重新计数
+			acceleration = steeringForce / mass;
+
 			timer = 0;
 		}
-    }
+
+	}
+
+	/*
+	void FixedUpdate()
+	{
+		velocity += acceleration * Time.fixedDeltaTime; 
+		
+		if (velocity.sqrMagnitude > sqrMaxSpeed)
+			velocity = velocity.normalized * maxSpeed;
+		
+		moveDistance = velocity * Time.fixedDeltaTime;
+		
+		if (isPlanar)
+			moveDistance.y = 0;
+		
+		if (controller != null)
+			controller.SimpleMove(velocity);
+		else if (theRigidbody == null || theRigidbody.isKinematic)
+			transform.position += moveDistance;
+		else
+			theRigidbody.MovePosition(theRigidbody.position + moveDistance);		
+		
+		//updata facing direction
+		if (velocity.sqrMagnitude > 0.00001)
+		{
+			Vector3 newForward = Vector3.Slerp(transform.forward, velocity, damping * Time.deltaTime);
+			newForward.y = 0;
+			transform.forward = newForward;
+		}
+	}*/
 }

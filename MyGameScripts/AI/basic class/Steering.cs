@@ -1,25 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public abstract class Steering : MonoBehaviour
-{
-	//每个操控力的权重
-	public float weight = 1.0f;
+public abstract class Steering : MonoBehaviour {
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public float weight = 1;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	void Start () {
+	
+	}
 
-	//计算操控力的方法，由派生类实现
+	void Update () {
+	
+	}
+
 	public virtual Vector3 Force()
 	{
 		return new Vector3(0,0,0);
