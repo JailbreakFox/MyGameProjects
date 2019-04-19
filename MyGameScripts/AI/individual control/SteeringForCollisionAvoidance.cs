@@ -36,7 +36,8 @@ public class SteeringForCollisionAvoidance : Steering
 		Vector3 normalizedVelocity = velocity.normalized;
 
 		//Debug.DrawLine(transform.position, transform.position + normalizedVelocity * MAX_SEE_AHEAD * (velocity.magnitude / maxSpeed));
-
+		
+		//碰撞体collider需要设置成3D的，2D的经测试检测不到
 		//if (Physics.Raycast(transform.position, normalizedVelocity, out hit, MAX_SEE_AHEAD))
 		if (Physics.Raycast(transform.position, normalizedVelocity, out hit, MAX_SEE_AHEAD * velocity.magnitude / maxSpeed))
 		{
@@ -44,9 +45,9 @@ public class SteeringForCollisionAvoidance : Steering
 			Vector3 ahead = transform.position + normalizedVelocity * MAX_SEE_AHEAD * (velocity.magnitude / maxSpeed);
 			force = ahead - hit.collider.transform.position;
 			force *= avoidanceForce; 
-			
+
 			if (isPlanar)
-				force.y = 0;
+				force.z = 0;
 
 			//Debug.DrawLine(transform.position, transform.position + force);	
 			//change color use when there is only one AI in the scene, or multiple actions will conflict
@@ -69,7 +70,6 @@ public class SteeringForCollisionAvoidance : Steering
 				render.material.color = Color.white;//Color.gray;
 			}
 		}
-
 
 		/*
 		if (Physics.Raycast(transform.position, transform.forward, out hit, maxSpeed))
