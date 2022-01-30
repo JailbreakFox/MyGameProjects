@@ -127,6 +127,15 @@ https://www.bilibili.com/video/BV15D4y1U7j5
 4.为了让镜头不抖动，除了smoothing属性，比如项目设置-Rendering-2d-Use Gpu Pixel Snap(开启像素吸附)   04:30
 5.为了解决死亡后，镜头会回到初始起点，这里我们需要把Camera2D节点放置到根节点下，然后在玩家节点下添加一个RemoteTransform2D的子节点(需要将Camera2D节点加载到其Remote Path属性之下)    05:25
 
+教程 - 第二十二讲
+1.音乐播放使用AudioStreamPlayer节点(可以理解为一个音响，另外AudioStreamPlayer2D具有距离越远音效越弱的特点)。实际使用的时候只需要将音效加入到动画的帧中间，添加"音频播放轨道"，并插入播放音效的关键帧即可   00:52
+2.注意如果要在动画中播放音效，则音效不要直接拖放到AudioStreamPlayer节点中，而是拖放到关键帧中。如果要在Effect中添加，则可以将音效直接拖放到AudioStreamPlayer节点中，并勾选自动播放  03:15
+3.Hitbox可能在初始状态下就开启，为解决这个bug，我们可以在IdleDown动画中禁用Hitbox即可   05:36
+4.*关于着色器的用法  13:00
+
+教程 - 第二十三讲
+1.关于限制镜头移动，当地图有界限时可以修改Limit属性中的上下左右最大边界值，这样当玩家走到该处时，镜头就无法再移动了   03:49
+
 GDScript编程细节
 1.使用'$'可以获取到脚本节点的子节点    P5.11:38
 2.onready var定义初始化时的变量   P5.12:56

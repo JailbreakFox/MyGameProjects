@@ -64,6 +64,7 @@ MAX_HEALTH = 2
 position = Vector2( 0, -11 )
 frames = SubResource( 6 )
 animation = "fly"
+frame = 2
 playing = true
 
 [node name="ShadowSprite" type="Sprite" parent="."]
